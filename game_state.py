@@ -61,4 +61,60 @@ class GameState:
             print('│' + ''.join(row) + suffix)
         print('+' + '─' * BOARD_SIZE + '+')
 
-   
+# Move Generation
+def get_successors(self) -> list:
+    """
+    Return all possible legal moves from the current state.
+    Each move is represented as (action, next_state).
+    action = (car_id, direction) e.g., ('A', 'up')
+    """
+
+    grid = self.get_grid()
+    results = []
+
+    for car_id, car in self.cars.items():
+
+        # Horizontal cars
+        if car.orientation == 'H':
+
+            # Slide left
+            if car.col > 0 and grid[car.row][car.col - 1] == '.':
+                results.append(
+                    ((car_id, 'left'), self._slide(car_id, 0, -1))
+                )
+
+            # Slide right
+            right_end = car.col + car.length
+            if right_end < BOARD_SIZE and grid[car.row][right_end] == '.':
+                results.append(
+                    ((car_id, 'right'), self._slide(car_id, 0, 1))
+                )
+
+        # Vertical cars
+        else:
+
+            # Slide up
+            if car.row > 0 and grid[car.row - 1][car.col] == '.':
+                results.append(
+                    ((car_id, 'up'), self._slide(car_id, -1, 0))
+                )
+
+            # Slide down
+            bottom_end = car.row + car.length
+            if bottom_end < BOARD_SIZE and grid[bottom_end][car.col] == '.':
+                results.append(
+                    ((car_id, 'down'), self._slide(car_id, 1, 0))
+                )
+
+    return results
+def _slide(self, car_id: str, dr: int, dc: int):
+        """Return a new GameState with the specified car moved by (dr, dc)."""
+        new_cars = [car.copy() for car in self.cars.values()]
+        for car in new_cars:
+            if car.car_id == car_id:
+                car.row += dr
+                car.col += dc
+                break
+        return GameState(new_cars)
+
+
