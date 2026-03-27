@@ -105,6 +105,51 @@ def ucs(initial_state):
 
     return None, _stats(nodes, 0)
 
+# 4.  A*– A-Star Search
+def astar(initial_state, heuristic):
+    """
+    Expands nodes ordered by  f(n) = g(n) + h(n)  where:
+        g(n) = actual cost from start to n  (number of moves so far)
+        h(n) = heuristic estimate to goal   (admissible lower bound)
+    """
+    if initial_state.is_goal():
+        return [], _stats(0, 0)
+
+    counter = 0
+    h0      = heuristic(initial_state)
+    # Heap entry: (f, g, tie_breaker, state, path)
+    heap    = [(h0, 0, counter, initial_state, [])]
+    visited = {}   # encode → best g seen
+    nodes   = 0
+
+    while heap:
+        f, g, _, state, path = heapq.heappop(heap)
+        enc = state.encode()
+
+        if enc in visited:
+            continue
+        visited[enc] = g
+        nodes += 1
+
+        if state.is_goal():
+            return path, _stats(nodes, len(path))
+
+        for action, next_state in state.get_successors():
+            next_enc = next_state.encode()
+            new_g    = g + 1
+            new_h    = heuristic(next_state)
+            new_f    = new_g + new_h
+            if next_enc not in visited:
+                counter += 1
+                new_path = path + [(action, next_state)]
+                heapq.heappush(heap,
+                               (new_f, new_g, counter, next_state, new_path))
+
+    return None, _stats(nodes, 0)
+
+
+       
+
 
 
 
