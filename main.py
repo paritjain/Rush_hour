@@ -35,3 +35,44 @@ def run_all_algorithms(state):
     print('  Nodes = total states expanded during search')
     print('  Moves = number of car moves in the solution')
 
+# Single algorithm mode 
+def run_single_algorithm(state):
+    """Let the user pick one algorithm, solve, then open the visualizer."""
+    print('\nSelect algorithm:')
+    for key in sorted(ALGORITHMS):
+        name, _ = ALGORITHMS[key]
+        print(f'  {key}. {name}')
+
+    choice = input('\nEnter choice (1–5) [default 4]: ').strip() or '4'
+    if choice not in ALGORITHMS:
+        print('Invalid choice – using A* h1.')
+        choice = '4'
+
+    name, algo = ALGORITHMS[choice]
+    print(f'\nRunning {name}…')
+
+    t0              = time.time()
+    solution, stats = algo(state)
+    elapsed         = time.time() - t0
+
+ # Print results
+    print(f'\n  Result   : {"SOLVED" if solution else "No solution found"}')
+    print(f'  Nodes    : {stats["nodes_explored"]}')
+    print(f'  Moves    : {stats["solution_length"]}')
+    print(f'  Time     : {elapsed:.4f}s')
+
+    if solution:
+        print('\n  Solution path:')
+        for i, ((car_id, direction), _) in enumerate(solution, 1):
+            print(f'    Step {i:2d}: move car {car_id} {direction}')
+
+    # Open visualizer 
+    print('\n  Opening visualizer…')
+    print('  (Use arrow keys to step through, SPACE to auto-play, Q to quit)\n')
+    show_solution(state, solution, name, stats)
+
+   
+
+
+
+
