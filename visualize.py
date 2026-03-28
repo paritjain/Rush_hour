@@ -111,4 +111,63 @@ def _draw_board(screen, state, font_big, font_small, info_lines: list):
         screen.blit(surf, (ix, iy + i * 26))
 
     pygame.display.flip()
-    
+
+# Public API
+
+def show_solution(initial_state, solution, algo_name: str, stats: dict):
+    """
+    Open a window showing the solution step-by-step.
+
+    Controls
+    --------
+    →>   next step
+    <-    previous step
+    SPACE toggle auto-play
+    Q     quit
+    """
+    if not PYGAME_AVAILABLE:
+        _text_fallback(initial_state, solution, algo_name, stats)
+        return
+
+    pygame.init()
+    screen     = pygame.display.set_mode((WIN_W, WIN_H))
+    pygame.display.set_caption(f'Rush Hour  –  {algo_name}')
+    font_big   = pygame.font.SysFont('monospace', 30, bold=True)
+    font_small = pygame.font.SysFont('monospace', 17)
+    clock      = pygame.time.Clock()
+
+    # Build a flat list of (action_label, state) for every step
+    steps = [('Start', initial_state)]
+    if solution:
+        for (car_id, direction), state in solution:
+            steps.append((f'Move {car_id} {direction}', state))
+
+    idx        = 0
+    auto_play  = False
+    auto_ms    = 0
+
+    def info(i):
+        solved = '★ SOLVED!' if steps[i][1].is_goal() else ''
+        return [
+            f'Algorithm:',
+            f'  {algo_name}',
+            '',
+            f'Nodes explored:',
+            f'  {stats["nodes_explored"]}',
+            '',
+            f'Solution length:',
+            f'  {stats["solution_length"]} moves',
+            '',
+            '─' * 18,
+            f'Step {i} / {len(steps)-1}',
+            f'  {steps[i][0]}',
+            solved,
+            '',
+            'Controls:',
+            '  →> next step',
+            '  <- prev step',
+            '  SPACE auto-play',
+            '  Q  quit',
+        ]
+
+   
