@@ -170,4 +170,56 @@ def show_solution(initial_state, solution, algo_name: str, stats: dict):
             '  Q  quit',
         ]
 
-   
+while True:
+# Event Handling
+    for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            return
+
+        if event.type == pygame.KEYDOWN:
+
+            if event.key == pygame.K_q:
+                pygame.quit()
+                return
+
+            elif event.key == pygame.K_RIGHT and idx < len(steps) - 1:
+                idx += 1
+
+            elif event.key == pygame.K_LEFT and idx > 0:
+                idx -= 1
+
+            elif event.key == pygame.K_SPACE:
+                auto_play = not auto_play
+
+
+ 
+    # Auto-play Logic
+
+    dt = clock.tick(30)
+
+    if auto_play:
+        auto_ms += dt
+
+        if auto_ms >= 700:
+            auto_ms = 0
+
+            if idx < len(steps) - 1:
+                idx += 1
+            else:
+                auto_play = False
+
+
+    # Draw Current State
+    _, current_state = steps[idx]
+
+    _draw_board(
+        screen,
+        current_state,
+        font_big,
+        font_small,
+        info(idx)
+    )
+
+    pygame.display.flip()
