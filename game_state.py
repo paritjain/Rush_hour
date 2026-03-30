@@ -1,3 +1,6 @@
+BOARD_SIZE = 6
+TARGET_CAR = 'X'   # The red car that must escape
+EXIT_ROW   = 2     # Row where the exit gap is
 class Car:
     """A single vehicle on the Rush Hour grid."""
 
