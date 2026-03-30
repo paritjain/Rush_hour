@@ -5,7 +5,7 @@ def h_blocking_cars(state) -> int:
     grid      = state.get_grid()
     blockers  = set()
   
-   front_col = target.col + target.length
+    front_col = target.col + target.length
     for col in range(front_col, BOARD_SIZE):
         cell = grid[target.row][col]
         if cell != '.':
@@ -19,15 +19,15 @@ def h_advanced(state) -> int:
     grid      = state.get_grid()
     car_dict  = state.cars
     blockers  = set()
-# Step 1 – find direct blockers (same as h1)
-front_col = target.col + target.length
+    # Step 1 – find direct blockers (same as h1)
+    front_col = target.col + target.length
     for col in range(front_col, BOARD_SIZE):
         cell = grid[target.row][col]
         if cell != '.':
             blockers.add(cell)
 
- # Step 2 – check whether each blocker is stuck
- stuck = 0
+    # Step 2 – check whether each blocker is stuck
+    stuck = 0
     for bid in blockers:
         blocker = car_dict[bid]
         if blocker.orientation == 'V':
