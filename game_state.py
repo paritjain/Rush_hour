@@ -124,23 +124,25 @@ class GameState:
                 car.col += dc
                 break
         return GameState(new_cars)
-    
-# State Hashing and Equality
-def encode(self) -> tuple:
+
+  # State Hashing and Equality
+  def encode(self) -> tuple:
     """Compact, hashable representation of the state."""
     return tuple(sorted(
             (c.car_id, c.row, c.col) for c in self.cars.values()
         ))
-    
-def __eq__(self, other):
+
+  def __eq__(self, other):
     """Check if two game states are equal."""
     if not isinstance(other, GameState):
         return False
     return self.encode() == other.encode()
        
 
-def __hash__(self):
+  def __hash__(self):
     """Allow GameState to be used in sets and dictionaries."""
     return hash(self.encode())
 
 
+
+   
