@@ -70,6 +70,7 @@ def _draw_board(screen, state, font_big, font_small, info_lines: list):
 
     # CARS
 
+    # CARS
     for car in state.cars.values():
         cells  = car.cells()
         min_r  = min(r for r, _ in cells)
@@ -83,24 +84,18 @@ def _draw_board(screen, state, font_big, font_small, info_lines: list):
             (max_c - min_c + 1) * CELL - 10,
             (max_r - min_r + 1) * CELL - 10,
         )
+
         colour = _car_color(car.car_id)
 
-    # CAR BODY
+        pygame.draw.rect(screen, colour, car_rect, border_radius=10)
 
-    pygame.draw.rect(screen, colour,  car_rect, border_radius=10)
+        dark = tuple(max(0, v - 60) for v in colour)
+        pygame.draw.rect(screen, dark, car_rect, 2, border_radius=10)
 
-    # CAR BORDER
-
-    dark = tuple(max(0, v - 60) for v in colour)
-    pygame.draw.rect(screen, dark,    car_rect, 2, border_radius=10)
-
-    # CAR LABEL
-
-    label = font_big.render(car.car_id, True, (255, 255, 255))
-    lx = car_rect.centerx - label.get_width()  // 2
-    ly = car_rect.centery - label.get_height() // 2
-    screen.blit(label, (lx, ly))
-
+        label = font_big.render(car.car_id, True, (255, 255, 255))
+        lx = car_rect.centerx - label.get_width() // 2
+        ly = car_rect.centery - label.get_height() // 2
+        screen.blit(label, (lx, ly))
     # INFO PANEL
 
     ix = ox + BOARD_PX + 45
@@ -170,28 +165,28 @@ def show_solution(initial_state, solution, algo_name: str, stats: dict):
             '  Q  quit',
         ]
 
-while True:
-# Event Handling
-    for event in pygame.event.get():
+    while True:
+        # Event Handling
+        for event in pygame.event.get():
 
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            return
-
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_q:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 return
 
-            elif event.key == pygame.K_RIGHT and idx < len(steps) - 1:
-                idx += 1
+            if event.type == pygame.KEYDOWN:
 
-            elif event.key == pygame.K_LEFT and idx > 0:
-                idx -= 1
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    return
 
-            elif event.key == pygame.K_SPACE:
-                auto_play = not auto_play
+                elif event.key == pygame.K_RIGHT and idx < len(steps) - 1:
+                    idx += 1
+
+                elif event.key == pygame.K_LEFT and idx > 0:
+                    idx -= 1
+
+                elif event.key == pygame.K_SPACE:
+                    auto_play = not auto_play
 
 
  
@@ -229,7 +224,7 @@ while True:
 def _text_fallback(initial_state, solution, algo_name, stats):
     """
     Print every step of solution on the terminal. """
-    printf(f'\n[Visualizer] pygame not found – showing text output instead.')
+    print(f'\n[Visualizer] pygame not found – showing text output instead.')
     print(f'Algorithm : {algo_name}')
     print(f'Nodes : {stats["nodes_explored"]}')
     print(f'Length : {stats["solution_length"]} moves\n')
