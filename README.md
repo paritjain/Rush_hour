@@ -2,6 +2,11 @@
 A complete implementation of the **Rush Hour** sliding-block puzzle with four
 AI search algorithms and interactive visualisation.
 
+## Run
+pip install pygame
+cd rush_hour
+python main.py
+
 
 You will be prompted to:
 1. Choose a puzzle difficulty (1 = Easy, 2 = Medium, 3 = Hard)
