@@ -179,13 +179,13 @@ def show_solution(initial_state, solution, algo_name: str, stats: dict):
                     pygame.quit()
                     return
 
-                elif event.key == pygame.K_RIGHT and idx < len(steps) - 1:
+                if event.key == pygame.K_RIGHT and idx < len(steps) - 1:
                     idx += 1
 
-                elif event.key == pygame.K_LEFT and idx > 0:
+                if event.key == pygame.K_LEFT and idx > 0:
                     idx -= 1
 
-                elif event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE:
                     auto_play = not auto_play
 
 
