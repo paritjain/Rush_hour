@@ -44,14 +44,14 @@ class GameState:
         # dictionary keyed by car_id for O(1) lookup
         self.cars = {car.car_id: car for car in cars}
     
-   #Goal
-   def is_goal(self) -> bool:
+    #Goal
+    def is_goal(self) -> bool:
         """Return True if the red car reaches the exit column."""
         target = self.cars[TARGET_CAR]
         return target.col + target.length - 1 == BOARD_SIZE - 1
 
-   #Grid Helpers
-   def get_grid(self) -> list:
+    #Grid Helpers
+    def get_grid(self) -> list:
         """Return a BOARD_SIZE × BOARD_SIZE grid with '.' representing empty cells."""
         grid = [['.' for _ in range(BOARD_SIZE)]
                 for _ in range(BOARD_SIZE)]
@@ -68,54 +68,54 @@ class GameState:
             suffix = '>' if i == EXIT_ROW else '│'
             print('│' + ''.join(row) + suffix)
         print('+' + '─' * BOARD_SIZE + '+')
+        
+    # Move Generation
+    def get_successors(self) -> list:
+        """
+        Return all possible legal moves from the current state.
+        Each move is represented as (action, next_state).
+        action = (car_id, direction) e.g., ('A', 'up')
+        """
 
-# Move Generation
-def get_successors(self) -> list:
-    """
-    Return all possible legal moves from the current state.
-    Each move is represented as (action, next_state).
-    action = (car_id, direction) e.g., ('A', 'up')
-    """
+        grid = self.get_grid()
+        results = []
 
-    grid = self.get_grid()
-    results = []
+        for car_id, car in self.cars.items():
 
-    for car_id, car in self.cars.items():
+            # Horizontal cars
+            if car.orientation == 'H':
 
-        # Horizontal cars
-        if car.orientation == 'H':
+                # Slide left
+                if car.col > 0 and grid[car.row][car.col - 1] == '.':
+                    results.append(
+                        ((car_id, 'left'), self._slide(car_id, 0, -1))
+                    )
 
-            # Slide left
-            if car.col > 0 and grid[car.row][car.col - 1] == '.':
-                results.append(
-                    ((car_id, 'left'), self._slide(car_id, 0, -1))
-                )
+                # Slide right
+                right_end = car.col + car.length
+                if right_end < BOARD_SIZE and grid[car.row][right_end] == '.':
+                    results.append(
+                        ((car_id, 'right'), self._slide(car_id, 0, 1))
+                    )
 
-            # Slide right
-            right_end = car.col + car.length
-            if right_end < BOARD_SIZE and grid[car.row][right_end] == '.':
-                results.append(
-                    ((car_id, 'right'), self._slide(car_id, 0, 1))
-                )
+            else:
 
-        # Vertical cars
-        else:
+                # Slide up
+                if car.row > 0 and grid[car.row - 1][car.col] == '.':
+                    results.append(
+                        ((car_id, 'up'), self._slide(car_id, -1, 0))
+                    )
 
-            # Slide up
-            if car.row > 0 and grid[car.row - 1][car.col] == '.':
-                results.append(
-                    ((car_id, 'up'), self._slide(car_id, -1, 0))
-                )
+                # Slide down
+                bottom_end = car.row + car.length
+                if bottom_end < BOARD_SIZE and grid[bottom_end][car.col] == '.':
+                    results.append(
+                        ((car_id, 'down'), self._slide(car_id, 1, 0))
+                    )
 
-            # Slide down
-            bottom_end = car.row + car.length
-            if bottom_end < BOARD_SIZE and grid[bottom_end][car.col] == '.':
-                results.append(
-                    ((car_id, 'down'), self._slide(car_id, 1, 0))
-                )
-
-    return results
-def _slide(self, car_id: str, dr: int, dc: int):
+        return results
+        
+    def _slide(self, car_id: str, dr: int, dc: int):
         """Return a new GameState with the specified car moved by (dr, dc)."""
         new_cars = [car.copy() for car in self.cars.values()]
         for car in new_cars:
