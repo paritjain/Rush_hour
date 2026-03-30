@@ -13,21 +13,30 @@ class Car:
         self.col = col
         self.length = length
         self.orientation = orientation
-#Helpers
-   def cells(self) -> list:
+    #Helpers
+    def cells(self) -> list:
         """Return every (row, col) tuple this car occupies."""
         if self.orientation == 'H':
             return [(self.row, self.col + i) for i in range(self.length)]
         else:
             return [(self.row + i, self.col) for i in range(self.length)]
 
-   def copy(self):
-               """Return a deep copy of this car."""
-                return Car(self.car_id, self.row, self.col, self.length, self.orientation)
+    def copy(self):
+        """Return a deep copy of this car."""
+        return Car(
+            self.car_id,
+            self.row,
+            self.col,
+            self.length,
+            self.orientation
+        )
 
     def __repr__(self):
-         return (f"Car('{self.car_id}' " f"r={self.row} c={self.col} " f"{self.orientation}{self.length})")
-
+        return (
+            f"Car('{self.car_id}' "
+            f"r={self.row} c={self.col} "
+            f"{self.orientation}{self.length})"
+        )
 # GameState
 class GameState:
     """Represents the complete board state including all car positions."""
