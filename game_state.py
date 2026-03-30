@@ -130,21 +130,21 @@ class GameState:
 
   # State Hashing and Equality
     def encode(self) -> tuple:
-    """Compact, hashable representation of the state."""
-    return tuple(sorted(
-            (c.car_id, c.row, c.col) for c in self.cars.values()
-        ))
+        """Compact, hashable representation of the state."""
+        return tuple(sorted(
+                (c.car_id, c.row, c.col) for c in self.cars.values()
+            ))
 
     def __eq__(self, other):
-    """Check if two game states are equal."""
-    if not isinstance(other, GameState):
-        return False
-    return self.encode() == other.encode()
+        """Check if two game states are equal."""
+        if not isinstance(other, GameState):
+            return False
+        return self.encode() == other.encode()
        
 
     def __hash__(self):
-    """Allow GameState to be used in sets and dictionaries."""
-    return hash(self.encode())
+        """Allow GameState to be used in sets and dictionaries."""
+        return hash(self.encode())
 
 
 
