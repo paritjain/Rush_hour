@@ -223,3 +223,25 @@ while True:
     )
 
     pygame.display.flip()
+
+# FALLBACK
+
+def _text_fallback(initial_state, solution, algo_name, stats):
+    """
+    Print every step of solution on the terminal. """
+    printf(f'\n[Visualizer] pygame not found – showing text output instead.')
+    print(f'Algorithm : {algo_name}')
+    print(f'Nodes : {stats["nodes_explored"]}')
+    print(f'Length : {stats["solution_length"]} moves\n')
+
+    print('─ INITIAL BOARD ─')
+    initial_state.print_board()
+
+    if solution:
+        for i, ((car_id, direction), state) in enumerate(solution, 1):
+            input(f'\nStep {i}: Move {car_id} {direction}  (press Enter)')
+            state.print_board()
+    else:
+        print('No Solution was found.')
+            
+        
