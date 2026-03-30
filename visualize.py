@@ -190,34 +190,34 @@ def show_solution(initial_state, solution, algo_name: str, stats: dict):
 
 
  
-    # Auto-play Logic
+        # Auto-play Logic
 
-    dt = clock.tick(30)
+        dt = clock.tick(30)
 
-    if auto_play:
-        auto_ms += dt
+        if auto_play:
+            auto_ms += dt
+    
+            if auto_ms >= 700:
+                auto_ms = 0
+    
+                if idx < len(steps) - 1:
+                    idx += 1
+                else:
+                    auto_play = False
 
-        if auto_ms >= 700:
-            auto_ms = 0
 
-            if idx < len(steps) - 1:
-                idx += 1
-            else:
-                auto_play = False
+        # Draw Current State
+        _, current_state = steps[idx]
 
-
-    # Draw Current State
-    _, current_state = steps[idx]
-
-    _draw_board(
-        screen,
-        current_state,
-        font_big,
-        font_small,
-        info(idx)
-    )
-
-    pygame.display.flip()
+        _draw_board(
+            screen,
+            current_state,
+            font_big,
+            font_small,
+            info(idx)
+        )
+    
+        pygame.display.flip()
 
 # FALLBACK
 
