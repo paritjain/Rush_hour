@@ -15,7 +15,7 @@ def get_puzzle(level: int = 1) -> GameState:
 
 # EASY PUZZLE
 
-def _puzzler_easy() -> GameState:
+def _puzzle_easy() -> GameState:
   """
   Board Layout:  
   
@@ -48,7 +48,7 @@ def _puzzle_medium() -> GameState:
   . . . . . .
 
   Involves moving Mutiple Cars.
-  Solution: Car B moves vertically up, and car C moves ertically up/ down. Path for Red Car to exit is cleared in this manner. """
+  Solution: Car B moves vertically up, and car C moves vertically up/ down. Path for Red Car to exit is cleared in this manner. """
   return GameState([
         Car('X', 2, 0, 2, 'H'),   # Red car
         Car('A', 0, 0, 2, 'H'),   # Top-left horizontal
